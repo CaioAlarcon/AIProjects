@@ -1,7 +1,7 @@
 O que é pra fazer:
 
 Cinco algoritmos de busca:
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
 
 Busca em profundidade;
 Busca em largura;
