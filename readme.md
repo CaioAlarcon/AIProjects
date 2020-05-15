@@ -12,8 +12,8 @@ Hill Climbing.
 Ler entrada de um formato específico:
 intlinha intcoluna
 
-'*' = pode passar
-'#' = ponto inicial
-'-' = não pode passar
-'$' = objetivo
+'*' = pode passar  
+'#' = ponto inicial  
+'-' = não pode passar  
+'$' = objetivo  
 
