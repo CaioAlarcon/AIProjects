@@ -1,19 +1,18 @@
-#ifndef LABIRINTO_H
-#define LABIRINTO_H
+#pragma once 
 
-class LABIRINTO {
+class maze{
 
     private:
-        int linha;      //Numero de linhas do labirinto
-        int coluna;     //Numero de colunas do labirinto
-        char ** M;      //Matriz dinâmica que guarda a forma do labirinto
+        int rows;           
+        int columns;       
+        char ** M;          //Matriz dinâmica que guarda a forma do labirinto
     public:
+    maze(char * FileName);  //Construtor a partir do nome do arquivo
 
-
+    void print();           //Imprime labirinto na tela
 
 
 
 };
 
 
-#endif

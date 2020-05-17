@@ -1,11 +1,13 @@
-#include <iostream.h>
-
+#include <iostream>
+#include "labirinto.h"
 using namespace std;
 
 
+
 int main(){
+    maze * L =  new maze("labirinto.txt");
+    L->print();
     
-    cout <<
     
     return 0;
 }

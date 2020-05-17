@@ -1,32 +1,39 @@
-#include <stdio.h>
+#include "labirinto.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 
-
-//isso aqui precisa ser transformado no construtor
-struct Labirinto LerLabirinto(char * NomeArquivo){
+maze::maze(char * FileName){
     FILE * fp;
     int x, y;
-    struct  Labirinto L;
     
-    fp = fopen(NomeArquivo,"r+");
+    //Abrir arquivo para ler dimensões do labirinto
+    fp = fopen(FileName,"r+");
+    fscanf(fp, "%d %d\n",&this->rows, &this->columns);
     
-    fscanf(fp, "%d %d\n",&L.linha, &L.coluna);
-    
-    L.M = (char**)malloc(sizeof(char*)*L.linha);
 
-    for(x=0;x<L.linha;x++){
-        L.M[x] = (char*)malloc(sizeof(char)*L.coluna);
+    //Criar array dinâmico para conter o labirinto
+    this->M = (char**)malloc(sizeof(char*)*this->rows);
+    for(x=0;x<this->rows;x++){
+        this->M[x] = (char*)malloc(sizeof(char)*this->columns);
     }
 
-    for(x=0;x<L.linha;x++){
-        for(y=0;y<L.coluna;y++){
-            fscanf(fp,"%c",&L.M[x][y]);
+    //Ler do arquivo o labirinto
+    for(x=0;x<this->rows;x++){
+        for(y=0;y<this->columns;y++){
+            fscanf(fp,"%c",&this->M[x][y]);
         }
         fscanf(fp,"\n");
     }
     fclose(fp);
-    return L;   
+   
 }
 
-
+void maze::print(){
+    int i,j;
+    for(j=0;j<this->rows;j++){
+        for(i=0;i<this->columns;i++)
+            printf("%c",this->M[j][i]);
+        printf("\n");
+    }
+}
