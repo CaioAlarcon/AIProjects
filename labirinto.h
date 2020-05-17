@@ -7,12 +7,9 @@ class maze{
         int columns;       
         char ** M;          //Matriz dinâmica que guarda a forma do labirinto
     public:
-    maze(char * FileName);  //Construtor a partir do nome do arquivo
-
+    maze(char*);           //Construtor a partir do nome do arquivo
+    maze(const maze*); 
     void print();           //Imprime labirinto na tela
-
-
-
 };
 
 
