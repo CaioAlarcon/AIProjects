@@ -1,13 +1,19 @@
 #pragma once 
 
 class maze{
+    typedef struct{
+        int x,y;
+    }point;
 
     private:
         int rows;           
-        int columns;       
+        int columns;
+        point start;
+        point goal;       
         char ** M;          //Matriz dinâmica que guarda a forma do labirinto
     public:
-    maze(char*);           //Construtor a partir do nome do arquivo
+    maze(int rows, int lines, double WallDensity); //Construtor aleatório
+    maze(char*);           //Construtor a partir do arquivo
     maze(const maze*); 
     void print();           //Imprime labirinto na tela
 };

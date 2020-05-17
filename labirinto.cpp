@@ -1,7 +1,7 @@
 #include "labirinto.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <cstdlib>
 
 char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o labirinto
     int x, y;
@@ -13,6 +13,22 @@ char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o la
     return A;
 }
 
+maze::maze(int rows, int columns, double WallDensity){//Cria labirinto com densidade de paresdes específica
+    int x, y;
+    this->M = DinArray(rows,columns);
+    this->rows = rows;
+    this->columns = columns;
+    //criar
+    for(x=0;x<this->rows;x++){
+        for(y=0;y<this->columns;y++){
+            this->M[x][y] = ((double)rand()/RAND_MAX) < WallDensity? '-':'*'    ;
+        }
+    }
+    this->start = {0,rand()%columns};
+    this->goal = {rows-1,rand()%rows};
+    this->M[this->start.x ][this->start.y]='#';
+    this->M[this->goal.x ][this->goal.y]='$';
+}
 
 maze::maze(char * FileName){//  Construtor a partir de arquivo
     FILE * fp;
@@ -30,6 +46,8 @@ maze::maze(char * FileName){//  Construtor a partir de arquivo
     for(x=0;x<this->rows;x++){
         for(y=0;y<this->columns;y++){
             fscanf(fp,"%c",&this->M[x][y]);
+            if(this->M[x][y]=='#') this->start = {x,y};
+            if(this->M[x][y]=='$') this->goal = {x,y};
         }
         fscanf(fp,"\n");
     }
@@ -39,8 +57,7 @@ maze::maze(char * FileName){//  Construtor a partir de arquivo
 
 maze::maze(const maze* mz){//    Construtor cópia
     int x, y;
-    //*this = *mz;
-    //this->columns = mz->columns;
+    *this = *mz;
     
     this->M = DinArray(this->rows,this->columns);
 
