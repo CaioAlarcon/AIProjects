@@ -8,10 +8,10 @@ using namespace std;
 
 int main(){
     srand (time(NULL));
-    maze * L =  new maze(30, 60, 0.4);
-    maze * M = new maze(L);
-    
-    M->print();
+    maze * L =  new maze(30, 60, 0.4);//criar labirinto aleatório com densidade de 40%
+    L->mazeToFile("OutroArquivo.maze");//salvar no arquivo
+    maze * M = new maze("OutroArquivo.maze");//ler do arquivo
+    M->print();//mostrar na tela
     
     
     return 0;

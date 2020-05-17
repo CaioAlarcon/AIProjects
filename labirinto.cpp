@@ -3,6 +3,26 @@
 #include <stdio.h>
 #include <cstdlib>
 
+
+void maze::mazeToFile(char * FileName){
+    FILE * fp;
+    int x, y;
+    
+    //Abrir arquivo para gravar dimensões do labirinto
+    fp = fopen(FileName,"w+");
+    fprintf(fp, "%d %d\n",this->rows, this->columns);
+    
+    //Gravar labirinto em disco
+    for(x=0;x<this->rows;x++){
+        for(y=0;y<this->columns;y++){
+            fprintf(fp,"%c",this->M[x][y]);
+            if(this->M[x][y]=='#') this->start = {x,y};
+            if(this->M[x][y]=='$') this->goal = {x,y};
+        }
+        fprintf(fp,"\n");
+    }
+    fclose(fp);
+}
 char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o labirinto
     int x, y;
     char ** A;
