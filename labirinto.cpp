@@ -135,7 +135,6 @@ void maze::tracePath (node ** NodeInfo){
         n->x = row;
         n->y = col;
         Path.push (n);
-        printf(".");
         int temp_row = NodeInfo[row][col].parent_i; 
         int temp_col = NodeInfo[row][col].parent_j; 
         row = temp_row; 
@@ -145,14 +144,17 @@ void maze::tracePath (node ** NodeInfo){
     n->x = row;
     n->y = col;
     Path.push (n); 
-    
+    printf("[");
     while (!Path.empty()){ 
         n = Path.top(); 
         Path.pop();
         this->M[n->x][n->y]='@';
-        printf("-> (%d,%d) ",n->x,n->y); 
+        printf("(%d,%d)",n->x,n->y);
+        if(!Path.empty())
+            printf(",");
         free(n);
     }
+    printf("]");
     printf("\n");
 }
 
