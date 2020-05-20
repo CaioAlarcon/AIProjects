@@ -9,9 +9,16 @@
 
 using namespace std;
 
-void maze::solve(int algs){
-    
-    AStar();
+void maze::print(path p){
+    int i;
+    printf("[");
+    for(i=0;i<p.steps-1;i++)
+        printf("(%d,%d),",p.P[i].x,p.P[i].y);
+    printf("(%d,%d)]\n",p.P[i].x,p.P[i].y);
+}
+
+path maze::solve(int algs){
+    return AStar();
 }
 
 void maze::mazeToFile(char * FileName){
@@ -124,17 +131,20 @@ double maze::H(int i, int j, point goal){ //Efetua o calculo da heuristica
 bool maze::IsDestination(int x, int y){
     return (this->goal.x == x && this->goal.y == y);
 }
-void maze::tracePath (node ** NodeInfo){    
+path maze::tracePath (node ** NodeInfo  ){    
     int row = this->goal.x;
     int col = this->goal.y; 
+    int i=0;
     point * n;
+    path p;
     stack<point*> Path; 
-    
+    p.steps = 0; 
     while (!(NodeInfo[row][col].parent_i == row  && NodeInfo[row][col].parent_j == col )){ 
         n = (point*)malloc(sizeof(point));
         n->x = row;
         n->y = col;
         Path.push (n);
+        p.steps++;
         int temp_row = NodeInfo[row][col].parent_i; 
         int temp_col = NodeInfo[row][col].parent_j; 
         row = temp_row; 
@@ -143,22 +153,26 @@ void maze::tracePath (node ** NodeInfo){
     n = (point*)malloc(sizeof(point));
     n->x = row;
     n->y = col;
-    Path.push (n); 
-    printf("[");
+    Path.push (n);
+    p.steps++;
+    //printf("[");
+    p.P = (point*)malloc(sizeof(point)*p.steps);//reserva na heap espaço para o caminho
     while (!Path.empty()){ 
         n = Path.top(); 
         Path.pop();
         this->M[n->x][n->y]='@';
-        printf("(%d,%d)",n->x,n->y);
-        if(!Path.empty())
-            printf(",");
+        p.P[i++]=*n;//isso copia o valor, não o endereço
+        //printf("(%d,%d)",n->x,n->y);//usa sprintf envez
+        //if(!Path.empty())
+        //    printf(",");
         free(n);
     }
-    printf("]");
-    printf("\n");
+    //printf("]");
+    //printf("\n");
+    return p;
 }
 
-void maze::AStar(){
+path maze::AStar(){
     int i,j;
     std::list <int> a;
     bool ** closed;
@@ -215,10 +229,8 @@ void maze::AStar(){
                 // Set the Parent of the destination cell 
                 NodeInfo[i-1][j].parent_i = i; 
                 NodeInfo[i-1][j].parent_j = j; 
-                 
-                tracePath ((node**)NodeInfo); 
-                foundDest = true; 
-                return; 
+                foundDest = true;
+                return tracePath ((node**)NodeInfo); 
             }   
             else if (!closed[i-1][j] &&  isUnBlocked(this->M, i-1, j)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -245,10 +257,8 @@ void maze::AStar(){
                 // Set the Parent of the destination cell 
                 NodeInfo[i+1][j].parent_i = i; 
                 NodeInfo[i+1][j].parent_j = j; 
-                 
-                tracePath ((node**)NodeInfo); 
                 foundDest = true; 
-                return; 
+                return tracePath ((node**)NodeInfo); 
             }   
             else if (!closed[i+1][j] &&  isUnBlocked(this->M, i+1, j)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -275,10 +285,8 @@ void maze::AStar(){
                 // Set the Parent of the destination cell 
                 NodeInfo[i][j-1].parent_i = i; 
                 NodeInfo[i][j-1].parent_j = j; 
-                 
-                tracePath ((node**)NodeInfo); 
                 foundDest = true; 
-                return; 
+                return tracePath ((node**)NodeInfo); 
             }   
             else if (!closed[i][j-1] &&  isUnBlocked(this->M, i, j-1)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -305,10 +313,8 @@ void maze::AStar(){
                 // Set the Parent of the destination cell 
                 NodeInfo[i][j+1].parent_i = i; 
                 NodeInfo[i][j+1].parent_j = j; 
-                 
-                tracePath ((node**)NodeInfo); 
-                foundDest = true; 
-                return; 
+                foundDest = true;  
+                return tracePath ((node**)NodeInfo); 
             }   
             else if (!closed[i][j+1] &&  isUnBlocked(this->M, i, j+1)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -332,8 +338,8 @@ void maze::AStar(){
 
     }
 
-    if (foundDest == false) 
-        printf("Falhou\n");
+    //if (foundDest == false) 
+    //    printf("Falhou\n");
 
 
 }
