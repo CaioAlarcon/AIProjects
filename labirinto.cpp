@@ -107,6 +107,10 @@ maze::maze(const maze* mz){//Construtor cópia
     }
 }
 
+maze::~maze(){//Destrutor
+    
+}
+
 void maze::print(){
     int i,j;
     for(j=0;j<this->rows;j++){
@@ -160,7 +164,7 @@ path maze::tracePath (node ** NodeInfo  ){
     while (!Path.empty()){ 
         n = Path.top(); 
         Path.pop();
-        this->M[n->x][n->y]='@';
+        this->M[n->x][n->y]='@';//Criar função que, em vez de fazer isso, imprima sem precisar alterar o labirinto
         p.P[i++]=*n;//isso copia o valor, não o endereço
         //printf("(%d,%d)",n->x,n->y);//usa sprintf envez
         //if(!Path.empty())
@@ -174,6 +178,8 @@ path maze::tracePath (node ** NodeInfo  ){
 
 path maze::AStar(){
     int i,j;
+    path ret;
+    ret.steps = -1;//indica que não tem caminho
     std::list <int> a;
     bool ** closed;
     
@@ -212,7 +218,7 @@ path maze::AStar(){
  
     bool foundDest = false; 
   
-    while (!open.empty()){
+    while (!open.empty() && !foundDest ){
         pPair p = *open.begin(); 
 
         open.erase(open.begin()); 
@@ -230,7 +236,9 @@ path maze::AStar(){
                 NodeInfo[i-1][j].parent_i = i; 
                 NodeInfo[i-1][j].parent_j = j; 
                 foundDest = true;
-                return tracePath ((node**)NodeInfo); 
+                ret = tracePath ((node**)NodeInfo);
+                continue;
+
             }   
             else if (!closed[i-1][j] &&  isUnBlocked(this->M, i-1, j)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -249,16 +257,16 @@ path maze::AStar(){
                     NodeInfo[i-1][j].parent_j = j; 
                 } 
             } 
-
-        } 
+        }
+        
 
         if (isValid(i+1, j)){
             if (IsDestination(i+1,j)){ 
-                // Set the Parent of the destination cell 
                 NodeInfo[i+1][j].parent_i = i; 
                 NodeInfo[i+1][j].parent_j = j; 
                 foundDest = true; 
-                return tracePath ((node**)NodeInfo); 
+                ret = tracePath ((node**)NodeInfo);
+                continue;
             }   
             else if (!closed[i+1][j] &&  isUnBlocked(this->M, i+1, j)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -269,7 +277,6 @@ path maze::AStar(){
                 if (NodeInfo[i+1][j].f == FLT_MAX || NodeInfo[i+1][j].f > fNew){ 
                     open.insert( make_pair(fNew, make_pair(i+1, j))); 
   
-                    // Update the details of this cell 
                     NodeInfo[i+1][j].f = fNew; 
                     NodeInfo[i+1][j].g = gNew; 
                     NodeInfo[i+1][j].h = hNew; 
@@ -278,15 +285,16 @@ path maze::AStar(){
                 } 
             } 
 
-        } 
+        }
+
         
         if (isValid(i, j-1)){
             if (IsDestination(i,j-1)){ 
-                // Set the Parent of the destination cell 
                 NodeInfo[i][j-1].parent_i = i; 
                 NodeInfo[i][j-1].parent_j = j; 
                 foundDest = true; 
-                return tracePath ((node**)NodeInfo); 
+                ret = tracePath ((node**)NodeInfo);
+                continue;
             }   
             else if (!closed[i][j-1] &&  isUnBlocked(this->M, i, j-1)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -297,7 +305,7 @@ path maze::AStar(){
                 if (NodeInfo[i][j-1].f == FLT_MAX || NodeInfo[i][j-1].f > fNew){ 
                     open.insert( make_pair(fNew, make_pair(i, j-1))); 
   
-                    // Update the details of this cell 
+                    
                     NodeInfo[i][j-1].f = fNew; 
                     NodeInfo[i][j-1].g = gNew; 
                     NodeInfo[i][j-1].h = hNew; 
@@ -305,16 +313,16 @@ path maze::AStar(){
                     NodeInfo[i][j-1].parent_j = j; 
                 } 
             } 
-
-        } 
+        }
+        
 
         if (isValid(i, j+1)){
             if (IsDestination(i,j+1)){ 
-                // Set the Parent of the destination cell 
                 NodeInfo[i][j+1].parent_i = i; 
                 NodeInfo[i][j+1].parent_j = j; 
                 foundDest = true;  
-                return tracePath ((node**)NodeInfo); 
+                ret = tracePath ((node**)NodeInfo);
+                continue; 
             }   
             else if (!closed[i][j+1] &&  isUnBlocked(this->M, i, j+1)){ 
                 gNew = NodeInfo[i][j].g + 1.0; 
@@ -325,22 +333,28 @@ path maze::AStar(){
                 if (NodeInfo[i][j+1].f == FLT_MAX || NodeInfo[i][j+1].f > fNew){ 
                     open.insert( make_pair(fNew, make_pair(i, j+1))); 
   
-                    // Update the details of this cell 
                     NodeInfo[i][j+1].f = fNew; 
                     NodeInfo[i][j+1].g = gNew; 
                     NodeInfo[i][j+1].h = hNew; 
                     NodeInfo[i][j+1].parent_i = i; 
                     NodeInfo[i][j+1].parent_j = j; 
                 } 
-            } 
-
-        } 
-
+            }
+        }
     }
 
-    //if (foundDest == false) 
-    //    printf("Falhou\n");
+    //desalocar tudo o que foi usad
 
+    //Liberar closed list
+    for(i=0;i<this->rows;i++)
+        free(closed[i]);
+    free(closed);
+    
+    //Liberar NodeInfo
+    for(i=0;i<this->rows;i++)
+        free(NodeInfo[i]);
+    free(NodeInfo);
 
+    return ret;
 }
 
