@@ -21,7 +21,7 @@ int main(){
         if(i<p.steps){//Se o numero de passos do labirinto anterior for menor
             i=p.steps;
             printf("%d\n",i);
-            L->print();//mostra o novo na tela
+            L->print(L,p);//mostra o novo na tela
             L->mazeToFile("CaminhoGrande.maze");//Salva no arquivo
             
         }

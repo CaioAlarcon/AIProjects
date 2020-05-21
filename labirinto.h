@@ -38,6 +38,7 @@ class maze{
         void mazeToFile(char * FileName);               //Salva o labirinto em arquivo
         void print();                                   //Imprime labirinto na tela
         void print(path p);                             //imprime o caminho na tela
+        void print(maze m, path p);                     //imprime o caminho no labirinto
 };
 
 

@@ -16,7 +16,34 @@ void maze::print(path p){
         printf("(%d,%d),",p.P[i].x,p.P[i].y);
     printf("(%d,%d)]\n",p.P[i].x,p.P[i].y);
 }
+void maze::print(){
+    int i,j;
+    for(j=0;j<this->rows;j++){
+        for(i=0;i<this->columns;i++)
+            printf("%c",this->M[j][i]);
+        printf("\n");
+    }
+}
 
+void maze::print(maze m, path p){
+    char M[m.rows][m.columns];
+    int i,j;
+    for(i=0;i<m.rows;i++){
+        for(j=0;j<m.columns;j++){
+            M[i][j] = m.M[i][j];
+        }
+    }
+    for(i=0;i<p.steps;i++)
+        M[p.P[i].x][p.P[i].y]='@';
+    
+    for(i=0;i<m.rows;i++){
+        for(j=0;j<m.columns;j++)
+            printf("%c",M[i][j]);
+    printf("\n");
+    }
+    printf("\n");
+
+}
 path maze::solve(int algs){
     return AStar();
 }
@@ -116,15 +143,6 @@ maze::~maze(){//Destrutor
     free(M);
 }
 
-void maze::print(){
-    int i,j;
-    for(j=0;j<this->rows;j++){
-        for(i=0;i<this->columns;i++)
-            printf("%c",this->M[j][i]);
-        printf("\n");
-    }
-}
-
 typedef pair<double, pair<int, int> > pPair;
 
 bool maze::isValid(int i, int j){
@@ -168,7 +186,7 @@ path maze::tracePath (node ** NodeInfo  ){
     while (!Path.empty()){ 
         n = Path.top(); 
         Path.pop();
-        this->M[n->x][n->y]='@';//Criar função que, em vez de fazer isso, imprima sem precisar alterar o labirinto
+        //this->M[n->x][n->y]='@';//Criar função que, em vez de fazer isso, imprima sem precisar alterar o labirinto
         PATH.P[i++]=*n;//isso copia o valor, não o endereço
         //printf("(%d,%d)",n->x,n->y);//usa sprintf envez
         //if(!Path.empty())
