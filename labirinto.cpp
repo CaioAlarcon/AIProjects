@@ -108,7 +108,12 @@ maze::maze(const maze* mz){//Construtor cópia
 }
 
 maze::~maze(){//Destrutor
+    int x;//Libera heap usado para armazenar o labirinto
     
+    for(x=0;x<rows;x++)
+        free(M[x]);
+    
+    free(M);
 }
 
 void maze::print(){
@@ -140,15 +145,14 @@ path maze::tracePath (node ** NodeInfo  ){
     int col = this->goal.y; 
     int i=0;
     point * n;
-    path p;
     stack<point*> Path; 
-    p.steps = 0; 
+    PATH.steps = 0; 
     while (!(NodeInfo[row][col].parent_i == row  && NodeInfo[row][col].parent_j == col )){ 
         n = (point*)malloc(sizeof(point));
         n->x = row;
         n->y = col;
         Path.push (n);
-        p.steps++;
+        PATH.steps++;
         int temp_row = NodeInfo[row][col].parent_i; 
         int temp_col = NodeInfo[row][col].parent_j; 
         row = temp_row; 
@@ -158,22 +162,22 @@ path maze::tracePath (node ** NodeInfo  ){
     n->x = row;
     n->y = col;
     Path.push (n);
-    p.steps++;
-    //printf("[");
-    p.P = (point*)malloc(sizeof(point)*p.steps);//reserva na heap espaço para o caminho
+    PATH.steps++;
+    
+    PATH.P = (point*)malloc(sizeof(point)*PATH.steps);//reserva na heap espaço para o caminho
     while (!Path.empty()){ 
         n = Path.top(); 
         Path.pop();
         this->M[n->x][n->y]='@';//Criar função que, em vez de fazer isso, imprima sem precisar alterar o labirinto
-        p.P[i++]=*n;//isso copia o valor, não o endereço
+        PATH.P[i++]=*n;//isso copia o valor, não o endereço
         //printf("(%d,%d)",n->x,n->y);//usa sprintf envez
         //if(!Path.empty())
         //    printf(",");
         free(n);
     }
-    //printf("]");
-    //printf("\n");
-    return p;
+
+    
+    return PATH;
 }
 
 path maze::AStar(){
@@ -184,7 +188,6 @@ path maze::AStar(){
     bool ** closed;
     
     closed = (bool**)malloc(sizeof(bool*)*this->rows);
-
     for(i=0;i<this->rows;i++)
         closed[i]=(bool*)malloc(sizeof(bool)*this->columns);
     

@@ -11,20 +11,23 @@ int main(){
     path p;
     int i=0;
     srand (time(NULL));
-    
+    maze * L;
     
     while (1){
-        /* code */
-        maze * L =  new maze(29, 26  , 0.35);//criar labirinto aleatório com densidade de 40%
+
+        maze * L =  new maze(20, 30  , 0.35);//criar labirinto aleatório com densidade de 40%
         p = L->solve(0);                     //resolver
         
         if(i<p.steps){//Se o numero de passos do labirinto anterior for menor
+            i=p.steps;
+            printf("%d\n",i);
             L->print();//mostra o novo na tela
             L->mazeToFile("CaminhoGrande.maze");//Salva no arquivo
-            i=p.steps;
+            
         }
         //printf("%d\n",p.steps);
         //L->print(p);
+        delete(L);
     }
     return 0;
 

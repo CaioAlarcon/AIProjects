@@ -17,6 +17,7 @@ class maze{
     }node;
 
     private:
+        path PATH;
         bool isValid(int i, int j);
         bool isUnBlocked(char ** grid, int i,int j);
         double H(int i, int j, point goal);
