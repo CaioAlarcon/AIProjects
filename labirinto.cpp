@@ -78,11 +78,29 @@ char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o la
     return A;
 }
 
+void maze::renew(double WallDensity){
+    int x, y;
+    for(x=0;x<this->rows;x++){
+        for(y=0;y<this->columns;y++){
+            this->M[x][y] = ((double)rand()/RAND_MAX) < WallDensity? '-':'*';
+        }
+    }
+    this->start = {0,rand()%columns};
+    this->goal = {rows-1,rand()%rows};
+    this->M[this->start.x ][this->start.y]='#';
+    this->M[this->goal.x ][this->goal.y]='$';
+    
+}
+
+
+
 maze::maze(int rows, int columns, double WallDensity){//Cria labirinto com densidade de paresdes específica
     int x, y;
     this->M = DinArray(rows,columns);
     this->rows = rows;
     this->columns = columns;
+    PATH.P=NULL;
+    PATH.steps=-1;
     //criar
     for(x=0;x<this->rows;x++){
         for(y=0;y<this->columns;y++){
@@ -98,7 +116,8 @@ maze::maze(int rows, int columns, double WallDensity){//Cria labirinto com densi
 maze::maze(char * FileName){//Construtor a partir de arquivo
     FILE * fp;
     int x, y;
-    
+    PATH.P=NULL;
+    PATH.steps=-1;
     //Abrir arquivo para ler dimensões do labirinto
     fp = fopen(FileName,"r+");
     fscanf(fp, "%d %d\n",&this->rows, &this->columns);
@@ -123,7 +142,8 @@ maze::maze(char * FileName){//Construtor a partir de arquivo
 maze::maze(const maze* mz){//Construtor cópia
     int x, y;
     *this = *mz;
-    
+    PATH.P=NULL;
+    PATH.steps=-1;
     this->M = DinArray(this->rows,this->columns);
 
     //copiar
@@ -161,16 +181,16 @@ bool maze::IsDestination(int x, int y){
 path maze::tracePath (node ** NodeInfo  ){    
     int row = this->goal.x;
     int col = this->goal.y; 
-    int i=0;
+    int i=0,steps=0;
     point * n;
     stack<point*> Path; 
-    PATH.steps = 0; 
+    steps = 0; 
     while (!(NodeInfo[row][col].parent_i == row  && NodeInfo[row][col].parent_j == col )){ 
         n = (point*)malloc(sizeof(point));
         n->x = row;
         n->y = col;
         Path.push (n);
-        PATH.steps++;
+        steps++;
         int temp_row = NodeInfo[row][col].parent_i; 
         int temp_col = NodeInfo[row][col].parent_j; 
         row = temp_row; 
@@ -180,9 +200,14 @@ path maze::tracePath (node ** NodeInfo  ){
     n->x = row;
     n->y = col;
     Path.push (n);
-    PATH.steps++;
+    steps++;
     
-    PATH.P = (point*)malloc(sizeof(point)*PATH.steps);//reserva na heap espaço para o caminho
+    if(PATH.steps < steps){
+        PATH.steps = steps;
+        PATH.P = (point*)realloc(PATH.P, sizeof(point)*PATH.steps);//reserva na heap espaço para o caminho
+    }
+    
+    
     while (!Path.empty()){ 
         n = Path.top(); 
         Path.pop();
@@ -234,7 +259,7 @@ path maze::AStar(){
     NodeInfo[i][j].parent_j = j; 
 
     set<pPair> open; 
-    open.insert(make_pair (0.0, make_pair (i, j))); 
+    open.insert(make_pair(0.0, make_pair (i, j))); 
   
  
     bool foundDest = false; 
