@@ -18,10 +18,10 @@ class maze{
 
     private:
         path PATH;
-        bool isValid(int i, int j);
-        bool isUnBlocked(char ** grid, int i,int j);
+        bool isValid(point);
+        bool isUnBlocked(char ** grid, point);
         double H(int i, int j, point goal);
-        bool IsDestination(int x, int y);
+        bool IsDestination(point);
         path tracePath (node ** NodeInfo);
         int rows;           
         int columns;
@@ -29,6 +29,7 @@ class maze{
         point goal;       
         char ** M;                                  //Matriz dinâmica que guarda a forma do labirinto
         path AStar();
+        path Depthfirst();
     public:
         maze(int rows, int lines, double WallDensity);  //Construtor aleatório
         maze(char*);                                    //Construtor a partir do arquivo

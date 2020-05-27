@@ -9,6 +9,13 @@
 
 using namespace std;
 
+point pnt(int x, int y){
+    point ret;
+    ret.x = x;
+    ret.y = y;
+    return ret;
+}
+
 void maze::print(path p){
     int i;
     printf("[");
@@ -165,18 +172,21 @@ maze::~maze(){//Destrutor
 
 typedef pair<double, pair<int, int> > pPair;
 
-bool maze::isValid(int i, int j){
-    return (i >= 0) && (i < this->rows) && (j >= 0) && (j < this->columns);
+bool maze::isValid(point p){
+    return (p.x >= 0) && (p.x < this->rows) && (p.y >= 0) && (p.y < this->columns);
 }
-bool maze::isUnBlocked(char ** grid, int i,int j){
-    return (grid[i][j]=='-'?false:true);
+
+
+
+bool maze::isUnBlocked(char ** grid, point p){
+    return (grid[p.x][p.y]=='-'?false:true);
 }
 
 double maze::H(int i, int j, point goal){ //Efetua o calculo da heuristica
     return ((double)sqrt ((i - goal.x)*(i - goal.x) + (j - goal.y)*(j - goal.y))); 
 }
-bool maze::IsDestination(int x, int y){
-    return (this->goal.x == x && this->goal.y == y);
+bool maze::IsDestination(point p){
+    return (this->goal.x == p.x && this->goal.y == p.y);
 }
 path maze::tracePath (node ** NodeInfo  ){    
     int row = this->goal.x;
@@ -224,17 +234,21 @@ path maze::tracePath (node ** NodeInfo  ){
 }
 
 path maze::AStar(){
-    int i,j;
+    int i,j,k;
+    point neighborhood[4];
     path ret;
     ret.steps = -1;//indica que não tem caminho
     std::list <int> a;
     bool ** closed;
     
+
     closed = (bool**)malloc(sizeof(bool*)*this->rows);
     for(i=0;i<this->rows;i++)
         closed[i]=(bool*)malloc(sizeof(bool)*this->columns);
     
     node ** NodeInfo;
+    node * naux;
+
     NodeInfo = (node**)malloc(sizeof(node*)*this->rows);
     for(i=0;i<this->rows;i++)
         NodeInfo[i]=(node*)malloc(sizeof(node)*this->columns);
@@ -265,7 +279,7 @@ path maze::AStar(){
     bool foundDest = false; 
   
     while (!open.empty() && !foundDest ){
-        pPair p = *open.begin(); 
+        pPair p = *open.begin();//Aqui o nó de maior H é pego da lista
 
         open.erase(open.begin()); 
   
@@ -275,118 +289,44 @@ path maze::AStar(){
         closed[i][j] = true;
 
         double gNew, hNew, fNew; 
-
-        if (isValid(i-1, j)){
-            if (IsDestination(i-1,j)){ 
-                // Set the Parent of the destination cell 
-                NodeInfo[i-1][j].parent_i = i; 
-                NodeInfo[i-1][j].parent_j = j; 
-                foundDest = true;
-                ret = tracePath ((node**)NodeInfo);
-                continue;
-
-            }   
-            else if (!closed[i-1][j] &&  isUnBlocked(this->M, i-1, j)){ 
-                gNew = NodeInfo[i][j].g + 1.0; 
-                hNew = H(i-1, j, this->goal); 
-                fNew = gNew + hNew; 
-  
-                 
-                if (NodeInfo[i-1][j].f == FLT_MAX || NodeInfo[i-1][j].f > fNew){ 
-                    open.insert( make_pair(fNew, make_pair(i-1, j))); 
-  
-                    // Update the details of this cell 
-                    NodeInfo[i-1][j].f = fNew; 
-                    NodeInfo[i-1][j].g = gNew; 
-                    NodeInfo[i-1][j].h = hNew; 
-                    NodeInfo[i-1][j].parent_i = i; 
-                    NodeInfo[i-1][j].parent_j = j; 
-                } 
-            } 
-        }
         
-
-        if (isValid(i+1, j)){
-            if (IsDestination(i+1,j)){ 
-                NodeInfo[i+1][j].parent_i = i; 
-                NodeInfo[i+1][j].parent_j = j; 
-                foundDest = true; 
-                ret = tracePath ((node**)NodeInfo);
-                continue;
-            }   
-            else if (!closed[i+1][j] &&  isUnBlocked(this->M, i+1, j)){ 
-                gNew = NodeInfo[i][j].g + 1.0; 
-                hNew = H(i+1, j, this->goal); 
-                fNew = gNew + hNew; 
-  
-                 
-                if (NodeInfo[i+1][j].f == FLT_MAX || NodeInfo[i+1][j].f > fNew){ 
-                    open.insert( make_pair(fNew, make_pair(i+1, j))); 
-  
-                    NodeInfo[i+1][j].f = fNew; 
-                    NodeInfo[i+1][j].g = gNew; 
-                    NodeInfo[i+1][j].h = hNew; 
-                    NodeInfo[i+1][j].parent_i = i; 
-                    NodeInfo[i+1][j].parent_j = j; 
-                } 
-            } 
-
-        }
-
         
-        if (isValid(i, j-1)){
-            if (IsDestination(i,j-1)){ 
-                NodeInfo[i][j-1].parent_i = i; 
-                NodeInfo[i][j-1].parent_j = j; 
-                foundDest = true; 
-                ret = tracePath ((node**)NodeInfo);
-                continue;
-            }   
-            else if (!closed[i][j-1] &&  isUnBlocked(this->M, i, j-1)){ 
-                gNew = NodeInfo[i][j].g + 1.0; 
-                hNew = H(i, j-1, this->goal); 
-                fNew = gNew + hNew; 
-  
-                 
-                if (NodeInfo[i][j-1].f == FLT_MAX || NodeInfo[i][j-1].f > fNew){ 
-                    open.insert( make_pair(fNew, make_pair(i, j-1))); 
-  
+        neighborhood[0] = pnt(i-1,j);
+        neighborhood[1] = pnt(i+1,j);
+        neighborhood[2] = pnt(i,j-1);
+        neighborhood[3] = pnt(i,j+1);
+
+        for(k=0;k<4 && !foundDest ;k++)
+            if (isValid(neighborhood[k])){
+                naux = &NodeInfo[neighborhood[k].x][neighborhood[k].y];
+                if (IsDestination(neighborhood[k])){ 
+                    naux->parent_i = i; 
+                    naux->parent_j = j; 
+                    foundDest = true;
+                    ret = tracePath ((node**)NodeInfo);
+                    continue;
+                }   
+                else if (!closed[neighborhood[k].x][neighborhood[k].y] &&  isUnBlocked(this->M, neighborhood[k])){ 
+                    gNew = NodeInfo[i][j].g + 1.0; 
+                    hNew = H(neighborhood[k].x, neighborhood[k].y, this->goal); 
+                    fNew = gNew + hNew; 
+    
                     
-                    NodeInfo[i][j-1].f = fNew; 
-                    NodeInfo[i][j-1].g = gNew; 
-                    NodeInfo[i][j-1].h = hNew; 
-                    NodeInfo[i][j-1].parent_i = i; 
-                    NodeInfo[i][j-1].parent_j = j; 
-                } 
-            } 
-        }
-        
-
-        if (isValid(i, j+1)){
-            if (IsDestination(i,j+1)){ 
-                NodeInfo[i][j+1].parent_i = i; 
-                NodeInfo[i][j+1].parent_j = j; 
-                foundDest = true;  
-                ret = tracePath ((node**)NodeInfo);
-                continue; 
-            }   
-            else if (!closed[i][j+1] &&  isUnBlocked(this->M, i, j+1)){ 
-                gNew = NodeInfo[i][j].g + 1.0; 
-                hNew = H(i, j+1, this->goal); 
-                fNew = gNew + hNew; 
-  
-                 
-                if (NodeInfo[i][j+1].f == FLT_MAX || NodeInfo[i][j+1].f > fNew){ 
-                    open.insert( make_pair(fNew, make_pair(i, j+1))); 
-  
-                    NodeInfo[i][j+1].f = fNew; 
-                    NodeInfo[i][j+1].g = gNew; 
-                    NodeInfo[i][j+1].h = hNew; 
-                    NodeInfo[i][j+1].parent_i = i; 
-                    NodeInfo[i][j+1].parent_j = j; 
+                    if (naux->f == FLT_MAX || naux->f > fNew){ 
+                        open.insert( make_pair(fNew, make_pair(neighborhood[k].x, neighborhood[k].y))); 
+    
+                        // Update the details of this cell 
+                        naux->f = fNew; 
+                        naux->g = gNew; 
+                        naux->h = hNew; 
+                        naux->parent_i = i; 
+                        naux->parent_j = j; 
+                    } 
                 } 
             }
-        }
+        
+
+       
     }
 
     //desalocar tudo o que foi usad
@@ -401,6 +341,15 @@ path maze::AStar(){
         free(NodeInfo[i]);
     free(NodeInfo);
 
+    
     return ret;
 }
+
+path maze::Depthfirst(){}
+
+
+
+
+
+
 
