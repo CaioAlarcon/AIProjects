@@ -1,5 +1,5 @@
 all:
-	g++ *.cpp -g *.h -w -o maze
+	g++ *.cpp -g *.h -W -o maze
 run:
 	./maze
 
