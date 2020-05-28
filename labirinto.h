@@ -1,4 +1,3 @@
-#pragma once
 #include <set>
 
 typedef struct{
@@ -30,8 +29,7 @@ class maze{
         point start;
         point goal;       
         char ** M;                                      //Matriz dinâmica que guarda a forma do labirinto
-        path AStar();
-        path Depthfirst();
+        path Search(int);
         void criteria(int, int, int, point, std::set<std::pair<double, std::pair<int, int> > > *);   //Aplica aos algoritmos seus respectivos critérios
     public:
         maze(int rows, int lines, double WallDensity);  //Construtor aleatório
@@ -39,7 +37,7 @@ class maze{
         maze(const maze*);                              //Construtor cópia
         ~maze();
         path solve(int alg);                            //Resolve o labirinto usando um algoritmo específico
-        void mazeToFile(char * FileName);               //Salva o labirinto em arquivo
+        void mazeToFile(const char* FileName);               //Salva o labirinto em arquivo
         void print();                                   //Imprime labirinto na tela
         void print(path p);                             //imprime o caminho na tela
         void print(maze m, path p);                     //imprime o caminho no labirinto

@@ -14,7 +14,7 @@ int main(){
     maze * L =  new maze(20, 30 , 0.35);
 
     while (1){
-        p = L->solve(1);                     //resolver
+        p = L->solve(4);                     //resolver
         
         if(i<p.steps){//Se o numero de passos do labirinto anterior for menor
             i=p.steps;
