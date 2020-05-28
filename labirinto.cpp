@@ -52,7 +52,12 @@ void maze::print(maze m, path p){
 
 }
 path maze::solve(int algs){
-    return AStar();
+    switch(algs){
+        case 0:
+        return AStar();
+        case 1:
+        return Depthfirst();
+    }
 }
 
 void maze::mazeToFile(char * FileName){
@@ -233,6 +238,26 @@ path maze::tracePath (node ** NodeInfo  ){
     return PATH;
 }
 
+void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
+    double gNew, hNew, fNew=0.0; 
+    node * naux = &NodeInfo[neighbor.x][neighbor.y];
+    gNew = NodeInfo[i][j].g + 1.0; 
+    hNew = H(neighbor.x, neighbor.y, this->goal); 
+    fNew = gNew + hNew;
+    
+    if (naux->f >= fNew){ 
+        open->insert( make_pair(fNew, make_pair(neighbor.x, neighbor.y))); 
+        // Atualiza as informações desta célula 
+        naux->f = fNew; 
+        naux->g = gNew; 
+        naux->h = hNew; 
+        naux->parent_i = i; 
+        naux->parent_j = j; 
+    } 
+
+}
+
+
 path maze::AStar(){
     int i,j,k;
     point neighborhood[4];
@@ -304,7 +329,6 @@ path maze::AStar(){
                     naux->parent_j = j; 
                     foundDest = true;
                     ret = tracePath ((node**)NodeInfo);
-                    continue;
                 }   
                 else if (!closed[neighborhood[k].x][neighborhood[k].y] &&  isUnBlocked(this->M, neighborhood[k])){ 
                     gNew = NodeInfo[i][j].g + 1.0; 
@@ -345,7 +369,102 @@ path maze::AStar(){
     return ret;
 }
 
-path maze::Depthfirst(){}
+path maze::Depthfirst(){
+    int i,j,k;
+    point neighborhood[4];
+    path ret;
+    ret.steps = -1;//indica que não tem caminho
+    std::list <int> a;
+    bool ** closed;
+    
+
+    closed = (bool**)malloc(sizeof(bool*)*this->rows);
+    for(i=0;i<this->rows;i++)
+        closed[i]=(bool*)malloc(sizeof(bool)*this->columns);
+    
+    //node ** NodeInfo;
+    node * naux;
+
+    NodeInfo = (node**)malloc(sizeof(node*)*this->rows);
+    for(i=0;i<this->rows;i++)
+        NodeInfo[i]=(node*)malloc(sizeof(node)*this->columns);
+
+    for (i=0; i<this->rows; i++) { 
+        for (j=0; j<this->columns; j++){ 
+            NodeInfo[i][j].f = FLT_MAX; 
+            NodeInfo[i][j].g = FLT_MAX; 
+            NodeInfo[i][j].h = FLT_MAX; 
+            NodeInfo[i][j].parent_i = -1; 
+            NodeInfo[i][j].parent_j = -1; 
+        } 
+    } 
+
+    i = this->start.x;
+    j = this->start.y;
+
+    NodeInfo[i][j].f = 0.0; 
+    NodeInfo[i][j].g = 0.0; 
+    NodeInfo[i][j].h = 0.0; 
+    NodeInfo[i][j].parent_i = i; 
+    NodeInfo[i][j].parent_j = j; 
+
+    set<pPair> open; 
+    open.insert(make_pair(0.0, make_pair (i, j))); 
+  
+ 
+    bool foundDest = false; 
+  
+    while (!open.empty() && !foundDest ){
+        pPair p = *open.begin();//Aqui o nó de maior F é pego da lista
+        
+        open.erase(open.begin()); 
+  
+        // Add this vertex to the closed list 
+        i = p.second.first; 
+        j = p.second.second; 
+        closed[i][j] = true;
+
+        
+        neighborhood[0] = pnt(i-1,j);
+        neighborhood[1] = pnt(i+1,j);
+        neighborhood[2] = pnt(i,j-1);
+        neighborhood[3] = pnt(i,j+1);
+
+        for(k=0;k<4 && !foundDest ;k++)
+            if (isValid(neighborhood[k])){
+                naux = &NodeInfo[neighborhood[k].x][neighborhood[k].y];
+                if (IsDestination(neighborhood[k])){ //A saída foi alcançada
+                    naux->parent_i = i; 
+                    naux->parent_j = j; 
+                    foundDest = true;
+                    ret = tracePath (NodeInfo);
+                }   //Caso o nó seja alcançável 
+                else if (!closed[neighborhood[k].x][neighborhood[k].y] &&  isUnBlocked(this->M, neighborhood[k])){ 
+                    //A ideia é inserir o nó na lista aplicando o critério
+                    //referente à cada algoritmo
+                    criteria(0, i, j ,neighborhood[k],& open);
+                } 
+            }
+        
+
+       
+    }
+
+    //desalocar tudo o que foi usad
+
+    //Liberar closed list
+    for(i=0;i<this->rows;i++)
+        free(closed[i]);
+    free(closed);
+    
+    //Liberar NodeInfo
+    for(i=0;i<this->rows;i++)
+        free(NodeInfo[i]);
+    free(NodeInfo);
+
+    
+    return ret;
+}
 
 
 

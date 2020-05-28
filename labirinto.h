@@ -1,4 +1,5 @@
 #pragma once
+#include <set>
 
 typedef struct{
     int x,y;
@@ -23,13 +24,15 @@ class maze{
         double H(int i, int j, point goal);
         bool IsDestination(point);
         path tracePath (node ** NodeInfo);
+        node ** NodeInfo;
         int rows;           
         int columns;
         point start;
         point goal;       
-        char ** M;                                  //Matriz dinâmica que guarda a forma do labirinto
+        char ** M;                                      //Matriz dinâmica que guarda a forma do labirinto
         path AStar();
         path Depthfirst();
+        void criteria(int, int, int, point, std::set<std::pair<double, std::pair<int, int> > > *);   //Aplica aos algoritmos seus respectivos critérios
     public:
         maze(int rows, int lines, double WallDensity);  //Construtor aleatório
         maze(char*);                                    //Construtor a partir do arquivo
@@ -40,7 +43,7 @@ class maze{
         void print();                                   //Imprime labirinto na tela
         void print(path p);                             //imprime o caminho na tela
         void print(maze m, path p);                     //imprime o caminho no labirinto
-        void renew(double);                                   //reinicia o labirinto 
+        void renew(double);                             //reinicia o labirinto 
 };
 
 
