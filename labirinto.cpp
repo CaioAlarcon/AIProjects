@@ -22,7 +22,7 @@ void maze::print(path p){
         printf("(%d,%d),",p.P[i].x,p.P[i].y);
     printf("(%d,%d)]\n",p.P[i].x,p.P[i].y);
 }
-void maze::print(){
+void maze::print(){//Imprime o labirinto 
     int i,j;
     for(j=0;j<this->rows;j++){
         for(i=0;i<this->columns;i++)
@@ -60,6 +60,11 @@ void maze::mazeToFile(const char * FileName){
     
     //Abrir arquivo para gravar dimensões do labirinto
     fp = fopen(FileName,"w+");
+    if(!fp){
+        printf("Arquivo não encontrado!\n");
+        exit(0);
+    }
+
     fprintf(fp, "%d %d\n",this->rows, this->columns);
     
     //Gravar labirinto em disco
@@ -134,6 +139,11 @@ maze::maze(char * FileName){//Construtor a partir de arquivo
     PATH.steps=-1;
     //Abrir arquivo para ler dimensões do labirinto
     fp = fopen(FileName,"r+");
+    if(!fp){
+        printf("Arquivo inexistente!\n");
+        exit(0);
+    }
+
     fscanf(fp, "%d %d\n",&this->rows, &this->columns);
     
 
@@ -170,7 +180,7 @@ maze::maze(const maze* mz){//Construtor cópia
     }
 }
 
-maze::~maze(){//Destrutor
+maze::~maze(){              //Destrutor
     int x;//Libera heap usado para armazenar o labirinto
     
     for(x=0;x<rows;x++)
@@ -189,7 +199,7 @@ bool maze::isUnBlocked(char ** grid, point p){
     return (grid[p.x][p.y]=='-'?false:true);
 }
 
-double maze::H(int i, int j, point goal){ //Efetua o calculo da heuristica
+double maze::H(int i, int j, point goal){ //Calcula a distância entre o ponto {i,j} e a saida do labirinto
     return ((double)sqrt ((i - goal.x)*(i - goal.x) + (j - goal.y)*(j - goal.y))); 
 }
 bool maze::IsDestination(point p){
@@ -246,6 +256,7 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
     pPair p;
     //agora é por um switch bem localizado para selecionar apenas o critério 
     switch(alg){
+        //Buscas informadas:
         case 0://AStar, o critério é fNew = gNew + hNew;
 
             gNew = NodeInfo[i][j].g + 1.0; 
@@ -262,29 +273,31 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
                 naux->parent_j = j; 
             } 
         break;
-        case 1://
+        case 1://hill climbing otimiza uma solução  já encontrada
             printf("algoritmo ainda não implementado!");
             exit(0);
         break;
 
 
-        case 2://
-            printf("algoritmo ainda não implementado!");
-            exit(0);
+        case 2://best-first quâo distante a solução está do nó atual?
+            fNew = -H(neighbor.x, neighbor.y,goal);
+            naux->parent_i = i; 
+            naux->parent_j = j; 
+            open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
 
-
+        //Buscas não informadas
         case 3://Busca em profundidade, basta usar a lista como pilha
-            //p = *open->begin();
-            //fNew = p.first + 1;
+            p = *open->begin();
+            fNew = p.first + 1;
             naux->parent_i = i; 
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
         
         case 4://Busca em largura, basta usar a lista como fila
-            //p = *open->end();
-            //fNew = p.first - 1;
+            p = *open->end();
+            fNew = p.first - 1;
             naux->parent_i = i; 
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
@@ -311,7 +324,7 @@ path maze::Search(int alg){//Resolve o labirinto baseado em algum algoritmo espe
     for(i=0;i<this->rows;i++)
         NodeInfo[i]=(node*)malloc(sizeof(node)*this->columns);
 
-    for (i=0; i<this->rows; i++) { 
+    for (i=0; i<this->rows; i++) { //Inicializa NodeInfo
         for (j=0; j<this->columns; j++){ 
             NodeInfo[i][j].f = FLT_MAX; 
             NodeInfo[i][j].g = FLT_MAX; 
