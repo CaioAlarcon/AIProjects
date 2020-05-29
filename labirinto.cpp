@@ -280,28 +280,31 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
 
 
         case 2://best-first quâo distante a solução está do nó atual?
-            fNew = -H(neighbor.x, neighbor.y,goal);
+            fNew = H(neighbor.x, neighbor.y,goal);
             naux->parent_i = i; 
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
 
         //Buscas não informadas
-        case 3://Busca em profundidade, basta usar a lista como pilha
+        case 4://Busca em profundidade, basta usar a lista como pilha
             p = *open->begin();
-            fNew = p.first + 1;
-            naux->parent_i = i; 
-            naux->parent_j = j; 
-            open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
-        break;
-        
-        case 4://Busca em largura, basta usar a lista como fila
-            p = *open->end();
             fNew = p.first - 1;
             naux->parent_i = i; 
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
+        
+        case 3://Busca em largura, basta usar a lista como fila
+            p = *open->end();
+            fNew = p.first + 1;
+            naux->parent_i = i; 
+            naux->parent_j = j; 
+            open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
+        break;
+        default:
+            printf("O algoritmo %d não existe!\n",alg);
+            exit(0);
     }
 
 }
