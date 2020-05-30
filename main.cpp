@@ -2,7 +2,6 @@
 #include "labirinto.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include <string.h>
 using namespace std;
 void help();
@@ -74,12 +73,12 @@ int main(int argc, char * argv[]){
             //L = new maze(); precisa ter um construtor a partir do stdio...
         
         if(OF)
-            L->mazeToFile(OF);
+            L->mazeToFile(OF);//fazer a versão que salva a solução tbm 
         else
             L->print(L,p);
 
     }
-
+    cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
     return 0;   
 }
 

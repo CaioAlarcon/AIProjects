@@ -7,6 +7,10 @@
 #include<bits/stdc++.h>
 
 using namespace std;
+double T1, T2;
+double maze::SolveTime(){//retorna o tempo de execussão do algoritmo
+    return (T2 - T1) * 1000.0 / CLOCKS_PER_SEC;
+}
 
 point pnt(int x, int y){
     point ret;
@@ -51,12 +55,16 @@ void maze::print(maze m, path p){
 
 }
 path maze::solve(int alg){
+    T1 = clock();
+    path ret;
     if(alg == 6)
-        return HillClimbing(Search(0));
-    if(alg/10==6)
-        return HillClimbing(Search(alg%10));
+        ret =  HillClimbing(Search(0));
+    else if(alg/10==6)
+        ret =  HillClimbing(Search(alg%10));
+    else ret = Search(alg);
 
-    return Search(alg);
+    T2 = clock();
+    return ret;
 }
 
 void maze::mazeToFile(const char * FileName){

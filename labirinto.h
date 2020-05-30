@@ -1,4 +1,5 @@
 #include <set>
+#include <time.h>
 
 typedef struct{
     int x,y;
@@ -33,6 +34,7 @@ class maze{
         path Search(int);
         void criteria(int, int, int, point, std::set<std::pair<double, std::pair<int, int> > > *);   //Aplica aos algoritmos seus respectivos critérios
     public:
+        double SolveTime();
         maze(int rows, int lines, double WallDensity);  //Construtor aleatório
         maze(char*);                                    //Construtor a partir do arquivo
         maze(const maze*);                              //Construtor cópia
