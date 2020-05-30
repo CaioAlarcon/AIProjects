@@ -20,7 +20,7 @@ int main(int argc, char * argv[]){
         if(!strcmp("-s",argv[i])){//solve
             solve = true;
             if(++i!=argc)
-                IF = strdup(argv[++i]);//input file
+                IF = strdup(argv[i]);//input file
             else if(++i!=argc)
                 sscanf(argv[i],"%d",&alg);
             else alg = 0;
