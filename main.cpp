@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 using namespace std;
-void help();
+void help();//Alguém me ajuda
 
 int main(int argc, char * argv[]){
     path p;
-    int i=0, alg,seed=-1;
+    int i=0, alg=0,seed=-1;
     maze * L;
     int height,width;
     double WallDensity;
@@ -19,8 +19,9 @@ int main(int argc, char * argv[]){
     for (i=1;i<argc;i++){//percorre os argumentos
         if(!strcmp("-s",argv[i])){//solve
             solve = true;
-            IF = strdup(argv[++i]);//input file
             if(++i!=argc)
+                IF = strdup(argv[++i]);//input file
+            else if(++i!=argc)
                 sscanf(argv[i],"%d",&alg);
             else alg = 0;
             continue;
@@ -32,6 +33,11 @@ int main(int argc, char * argv[]){
         }
 
         if(!strcmp("-g",argv[i])){
+            if(argc < i + 3){
+                cout << "faltam argumentos!\n"; 
+                cout << "-g altura largura densidade\n exemplo: -g 20 30 0.3\n";
+                exit(0);
+            }
             generate = true;
             sscanf(argv[++i],"%d",&height);
             sscanf(argv[++i],"%d",&width);
@@ -65,24 +71,21 @@ int main(int argc, char * argv[]){
     }
     
     if(solve){
-        if(IF){//Arquivo
+        if(IF)//Arquivo
             L = new maze(IF);
-            p = L->solve(alg);
-        }
-        //else
-            //L = new maze(); precisa ter um construtor a partir do stdio...
-        
+        else
+            L = new maze(); 
+        p = L->solve(alg);
         if(OF)
             L->mazeToFile(OF);//fazer a versão que salva a solução tbm 
         else
             L->print(L,p);
-
     }
+
     cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
     return 0;   
 }
 
 void help(){
     printf("página de ajuda\n");    
-
 }

@@ -178,6 +178,29 @@ maze::maze(char * FileName){//Construtor a partir de arquivo
    
 }
 
+maze::maze(){//Construtor a partir do std
+    int x, y;
+    PATH.P=NULL;
+    PATH.steps=-1;
+    //Abrir arquivo para ler dimensões do labirinto
+    scanf("%d %d\n",&this->rows, &this->columns);
+    
+    //Criar array dinâmico para conter o labirinto
+    this->M = DinArray(this->rows,this->columns);
+
+    //Ler do stdin o labirinto
+    for(x=0;x<this->rows;x++){
+        for(y=0;y<this->columns;y++){
+            scanf("%c",&this->M[x][y]);
+            if(this->M[x][y]=='#') this->start.x = x;
+            if(this->M[x][y]=='#') this->start.y = y;
+            if(this->M[x][y]=='$') this->goal.x = x;
+            if(this->M[x][y]=='$') this->goal.y = y;
+        }
+        scanf("\n");
+    }   
+}
+
 maze::maze(const maze* mz){//Construtor cópia
     int x, y;
     *this = *mz;
