@@ -14,10 +14,14 @@ class maze{
 
     typedef struct{
         int parent_i, parent_j;
-        double f,g,h;
+        float f,g,h;
     }node;
 
     private:
+        char * FN;
+        int Alg;
+        char Algname[15];
+        bool foundDest;
         path PATH;
         bool isValid(point);
         bool isUnBlocked(char ** grid, point);
@@ -34,6 +38,7 @@ class maze{
         path Search(int);
         void criteria(int, int, int, point, std::set<std::pair<double, std::pair<int, int> > > *);   //Aplica aos algoritmos seus respectivos critérios
     public:
+        void AlgName(char name[10]);
         double SolveTime();
         maze();                                         //Construtor a partir do stdio
         maze(int rows, int lines, double WallDensity);  //Construtor aleatório
@@ -44,7 +49,10 @@ class maze{
         void mazeToFile(const char* FileName);          //Salva o labirinto em arquivo
         void print();                                   //Imprime labirinto na tela
         void print(path p);                             //imprime o caminho na tela
+        void print(path p,char * FileName);             //Imprime caminho no arquivo.
+        void print(path p,void * fp);                   //Imprime caminho no arquivo.
         void print(maze m, path p);                     //imprime o caminho no labirinto
+        void print(maze m, path p,char * FileName);     //imprime no arquivo o caminho no labirinto
         void renew(double);                             //reinicia o labirinto 
         void log();
 };

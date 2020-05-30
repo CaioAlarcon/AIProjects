@@ -8,12 +8,38 @@
 
 using namespace std;
 double T1, T2;
-
+void maze::AlgName(char name[15]){
+    switch(Alg){
+        case 0:
+        sprintf(name,"Random");
+        break;
+        case 1:
+        sprintf(name,"Profundidade");
+        break;
+        case 2:
+        sprintf(name,"Largura");
+        break;
+        case 3:
+        sprintf(name,"BestFirst");
+        break;
+        case 4:
+        sprintf(name,"A Star");
+        break;
+        case 5:
+        sprintf(name,"Dijkstra");
+        break;
+        
+        default:
+        sprintf(name,"?");
+    }
+}
 void maze::log(){
     FILE * pf;
     while(!(pf = fopen("maze.log","a")));
+    
     if(pf){
-        fprintf(pf,"operação arquivo parametros\n");
+        fprintf(pf,"Alg:%s\tArq:%s\tAltu:%d\tLarg:%d\ttempo:%lfms\tpassos:%d\tcaminho:",Algname,FN,rows, columns,SolveTime(),PATH.steps);
+        print(PATH,pf);
     }
     fclose(pf);
 }
@@ -36,6 +62,23 @@ void maze::print(path p){
         printf("(%d,%d),",p.P[i].x,p.P[i].y);
     printf("(%d,%d)]\n",p.P[i].x,p.P[i].y);
 }
+void maze::print(path p,char * FileName){
+    FILE * fp;
+    int i;
+    fp = fopen(FileName,"w+");
+    if(!fp)return;
+    print(p,fp);
+    fclose(fp);
+}
+void maze::print(path p,void * fp){
+    int i;
+    if(!fp)return;
+    
+    fprintf((FILE*)fp,"[");
+    for(i=0;i<p.steps-1;i++)
+        fprintf((FILE*)fp,"(%d,%d),",p.P[i].x,p.P[i].y);
+    fprintf((FILE*)fp,"(%d,%d)]\n",p.P[i].x,p.P[i].y);
+}
 void maze::print(){//Imprime o labirinto 
     int i,j;
     for(j=0;j<this->rows;j++){
@@ -44,9 +87,26 @@ void maze::print(){//Imprime o labirinto
         printf("\n");
     }
 }
+char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o labirinto
+    int x, y;
+    char ** A;
+    A = (char**)malloc(sizeof(char*)*rows);
+    if(!A){
+        printf("Falta ram!\n");
+        exit(0);
+    }
+    for(x=0;x<rows;x++){
+        A[x] = (char*)malloc(sizeof(char)*columns);
+        if(!A[x]){
+            printf("Falta ram!\n");
+            exit(0);
+        }
+    }
+    return A;
+}
 
 void maze::print(maze m, path p){
-    char M[m.rows][m.columns];
+    char ** M = DinArray(m.rows,m.columns);
     int i,j;
     for(i=0;i<m.rows;i++){
         for(j=0;j<m.columns;j++){
@@ -62,8 +122,36 @@ void maze::print(maze m, path p){
     printf("\n");
     }
     printf("\n");
+    free(M);
 
 }
+void maze::print(maze m, path p, char * FileName){
+    FILE * fp;
+    fp = fopen(FileName,"w+");
+    if(!fp)exit(0);
+    
+    fprintf(fp, "%d %d\n",this->rows, this->columns);
+
+    char ** M = DinArray(m.rows,m.columns);
+    int i,j;
+    for(i=0;i<m.rows;i++){
+        for(j=0;j<m.columns;j++){
+            M[i][j] = m.M[i][j];
+        }
+    }
+    for(i=0;i<p.steps;i++)
+        M[p.P[i].x][p.P[i].y]='@';
+    
+    for(i=0;i<m.rows;i++){
+        for(j=0;j<m.columns;j++)
+            fprintf(fp,"%c",M[i][j]);
+    fprintf(fp,"\n");
+    }
+    fprintf(fp,"\n");
+    free(M);
+
+}
+
 path maze::solve(int alg){
     T1 = clock();
     path ret;
@@ -74,6 +162,8 @@ path maze::solve(int alg){
     else ret = Search(alg);
 
     T2 = clock();
+    Alg = alg;
+    AlgName(Algname);
     return ret;
 }
 
@@ -106,23 +196,6 @@ void maze::mazeToFile(const char * FileName){
         fprintf(fp,"\n");
     }
     fclose(fp);
-}
-char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o labirinto
-    int x, y;
-    char ** A;
-    A = (char**)malloc(sizeof(char*)*rows);
-    if(!A){
-        printf("Falta ram!\n");
-        exit(0);
-    }
-    for(x=0;x<rows;x++){
-        A[x] = (char*)malloc(sizeof(char)*columns);
-        if(!A[x]){
-            printf("Falta ram!\n");
-            exit(0);
-        }
-    }
-    return A;
 }
 
 void maze::renew(double WallDensity){
@@ -165,6 +238,7 @@ maze::maze(int rows, int columns, double WallDensity){//Cria labirinto com densi
 maze::maze(char * FileName){//Construtor a partir de arquivo
     FILE * fp;
     int x, y;
+    FN = FileName;
     PATH.P=NULL;
     PATH.steps=-1;
     //Abrir arquivo para ler dimensões do labirinto
@@ -385,14 +459,20 @@ path maze::Search(int alg){//Resolve o labirinto baseado em algum algoritmo espe
     bool ** closed;
     
     closed = (bool**)malloc(sizeof(bool*)*this->rows);
-    for(i=0;i<this->rows;i++)
+    if(!closed)exit(0);
+    for(i=0;i<this->rows;i++){
         closed[i]=(bool*)malloc(sizeof(bool)*this->columns);
-    
+        if(!closed[i])exit(0);
+    }
     node * naux;
 
     NodeInfo = (node**)malloc(sizeof(node*)*this->rows);
-    for(i=0;i<this->rows;i++)
-        NodeInfo[i]=(node*)malloc(sizeof(node)*this->columns);
+    if(!NodeInfo)exit(0);
+        for(i=0;i<this->rows;i++){
+            NodeInfo[i]=(node*)malloc(sizeof(node)*this->columns);
+            if(!NodeInfo[i])exit(0);
+        }
+        
 
     for (i=0; i<this->rows; i++) { //Inicializa NodeInfo
         for (j=0; j<this->columns; j++){ 
@@ -417,7 +497,7 @@ path maze::Search(int alg){//Resolve o labirinto baseado em algum algoritmo espe
     open.insert(make_pair(0.0, make_pair (i, j))); 
   
  
-    bool foundDest = false; 
+    foundDest = false; 
   
     while (!open.empty() && !foundDest ){
         pPair p = *open.begin();//Aqui o nó de maior F é pego da lista
@@ -450,9 +530,6 @@ path maze::Search(int alg){//Resolve o labirinto baseado em algum algoritmo espe
                     criteria(alg, i, j ,neighborhood[k], &open);
                 } 
             }
-        
-
-       
     }
 
     //desalocar tudo o que foi usad
@@ -467,8 +544,6 @@ path maze::Search(int alg){//Resolve o labirinto baseado em algum algoritmo espe
         free(NodeInfo[i]);
     free(NodeInfo);
 
-    //if(!foundDest)printf(".");
-    
     return ret;
 }
 

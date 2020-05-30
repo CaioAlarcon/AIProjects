@@ -12,7 +12,7 @@ int main(int argc, char * argv[]){
     maze * L;
     int height,width;
     double WallDensity;
-    bool solve=false, generate=false,showpath=false,log;
+    bool solve=false, generate=false,showpath=false,log, print = false;
     char * IF=NULL;
     char * OF=NULL;
     
@@ -56,7 +56,10 @@ int main(int argc, char * argv[]){
             log = true;
             continue;
         }
-        
+        if(!strcmp("--print",argv[i++])){
+            print = true;
+            continue;
+        }
         printf("\"%s\" foi inesperado!\n",argv[i]);
         exit(0);
     }
@@ -72,7 +75,7 @@ int main(int argc, char * argv[]){
         L =  new maze(height, width , WallDensity);
         if(OF)
             L->mazeToFile(OF);
-        else
+        else if (print)
             L->print();
     }
     
@@ -83,8 +86,8 @@ int main(int argc, char * argv[]){
             L = new maze(); 
         p = L->solve(alg);
         if(OF)
-            L->mazeToFile(OF);//fazer a versão que salva a solução tbm 
-        else
+            L->print(L,p,OF);
+        else if (print)
             L->print(L,p);
     }
     L->log();
