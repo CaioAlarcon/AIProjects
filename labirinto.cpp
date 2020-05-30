@@ -8,6 +8,16 @@
 
 using namespace std;
 double T1, T2;
+
+void maze::log(){
+    FILE * pf;
+    while(!(pf = fopen("maze.log","a")));
+    if(pf){
+        fprintf(pf,"operação arquivo parametros\n");
+    }
+    fclose(pf);
+}
+
 double maze::SolveTime(){//retorna o tempo de execussão do algoritmo
     return (T2 - T1) * 1000.0 / CLOCKS_PER_SEC;
 }
@@ -101,9 +111,16 @@ char ** DinArray(int rows, int columns){//Criar array dinâmico para conter o la
     int x, y;
     char ** A;
     A = (char**)malloc(sizeof(char*)*rows);
-
+    if(!A){
+        printf("Falta ram!\n");
+        exit(0);
+    }
     for(x=0;x<rows;x++){
         A[x] = (char*)malloc(sizeof(char)*columns);
+        if(!A[x]){
+            printf("Falta ram!\n");
+            exit(0);
+        }
     }
     return A;
 }
@@ -138,9 +155,9 @@ maze::maze(int rows, int columns, double WallDensity){//Cria labirinto com densi
         }
     }
     this->start.x = 0;
-    this->start.y = rand()%columns;
+    this->start.y = rand()%rows;
     this->goal.x = rows-1;
-    this->goal.y = rand()%rows;
+    this->goal.y = rand()%columns;
     this->M[this->start.x ][this->start.y]='#';
     this->M[this->goal.x ][this->goal.y]='$';
 }
@@ -158,8 +175,6 @@ maze::maze(char * FileName){//Construtor a partir de arquivo
     }
 
     fscanf(fp, "%d %d\n",&this->rows, &this->columns);
-    
-
     //Criar array dinâmico para conter o labirinto
     this->M = DinArray(this->rows,this->columns);
 

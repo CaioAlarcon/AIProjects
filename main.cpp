@@ -12,7 +12,7 @@ int main(int argc, char * argv[]){
     maze * L;
     int height,width;
     double WallDensity;
-    bool solve=false, generate=false,showpath=false;
+    bool solve=false, generate=false,showpath=false,log;
     char * IF=NULL;
     char * OF=NULL;
     
@@ -21,7 +21,7 @@ int main(int argc, char * argv[]){
             solve = true;
             if(++i!=argc)
                 IF = strdup(argv[i]);//input file
-            else if(++i!=argc)
+            if(++i!=argc)
                 sscanf(argv[i],"%d",&alg);
             else alg = 0;
             continue;
@@ -46,11 +46,17 @@ int main(int argc, char * argv[]){
         }
         if(!strcmp("-p",argv[i])){
             showpath = true;
+            continue;
         }
         if(!strcmp("--seed",argv[i])){
             sscanf(argv[++i],"%d",&seed);
             continue;
         }
+        if(!strcmp("--log",argv[i++])){
+            log = true;
+            continue;
+        }
+        
         printf("\"%s\" foi inesperado!\n",argv[i]);
         exit(0);
     }
@@ -81,7 +87,7 @@ int main(int argc, char * argv[]){
         else
             L->print(L,p);
     }
-
+    L->log();
     cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
     return 0;   
 }

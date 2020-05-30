@@ -46,6 +46,7 @@ class maze{
         void print(path p);                             //imprime o caminho na tela
         void print(maze m, path p);                     //imprime o caminho no labirinto
         void renew(double);                             //reinicia o labirinto 
+        void log();
 };
 
 
