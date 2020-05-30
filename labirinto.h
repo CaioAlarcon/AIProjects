@@ -29,6 +29,7 @@ class maze{
         point start;
         point goal;       
         char ** M;                                      //Matriz dinâmica que guarda a forma do labirinto
+        path HillClimbing(path p);
         path Search(int);
         void criteria(int, int, int, point, std::set<std::pair<double, std::pair<int, int> > > *);   //Aplica aos algoritmos seus respectivos critérios
     public:

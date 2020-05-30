@@ -9,7 +9,7 @@ void help();
 
 int main(int argc, char * argv[]){
     path p;
-    int i=0, alg;
+    int i=0, alg,seed=-1;
     maze * L;
     int height,width;
     double WallDensity;
@@ -21,7 +21,9 @@ int main(int argc, char * argv[]){
         if(!strcmp("-s",argv[i])){//solve
             solve = true;
             IF = strdup(argv[++i]);//input file
-            sscanf(argv[++i],"%d",&alg);
+            if(++i!=argc)
+                sscanf(argv[i],"%d",&alg);
+            else alg = 0;
             continue;
         }
 
@@ -40,10 +42,18 @@ int main(int argc, char * argv[]){
         if(!strcmp("-p",argv[i])){
             showpath = true;
         }
-
+        if(!strcmp("--seed",argv[i])){
+            sscanf(argv[++i],"%d",&seed);
+            continue;
+        }
         printf("\"%s\" foi inesperado!\n",argv[i]);
         exit(0);
     }
+
+    if(seed==-1)
+        srand (time(NULL));
+    else
+        srand(seed);
 
     if(argc==1)help();
     
@@ -70,35 +80,8 @@ int main(int argc, char * argv[]){
 
     }
 
-
-
-
     return 0;   
-    
-    
-    i=0;
-    srand (time(NULL));
-
-    L =  new maze(20, 30 , 0.35);
-
-    while (1){
-        p = L->solve(2);                            //resolver
-        
-        if(i<p.steps){                              //Se o numero de passos do labirinto anterior for menor
-            i=p.steps;
-            printf("%d\n",i);
-            L->print(L,p);                          //mostra o novo na tela
-            L->mazeToFile("CaminhoGrande.maze");    //Salva no arquivo
-        }
-        L->renew(0.35);
-    }
-    return 0;
 }
-
-        //maze * L =  new maze("labirinto.txt");
-        //L->mazeToFile("OutroArquivo.maze");//salvar no arquivo
-        //maze * M = new maze("OutroArquivo.maze");//ler do arquivo
-        //L->print();//mostrar na tela
 
 void help(){
     printf("página de ajuda\n");    
