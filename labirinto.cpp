@@ -55,7 +55,7 @@ path maze::solve(int alg){
         return HillClimbing(Search(0));
     if(alg/10==6)
         return HillClimbing(Search(alg%10));
-    
+
     return Search(alg);
 }
 
@@ -261,31 +261,13 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
     pPair p;
     //agora é por um switch bem localizado para selecionar apenas o critério 
     switch(alg){
-        //Buscas informadas:
-        case 3://AStar, o critério é fNew = gNew + hNew;
-
-            gNew = NodeInfo[i][j].g + 1.0; 
-            hNew = H(neighbor.x, neighbor.y, this->goal); 
-            fNew = gNew + hNew;
-            
-            if (naux->f >= fNew){ 
-                open->insert( make_pair(fNew, make_pair(neighbor.x, neighbor.y))); 
-                // Atualiza as informações desta célula 
-                naux->f = fNew; 
-                naux->g = gNew; 
-                naux->h = hNew; 
-                naux->parent_i = i; 
-                naux->parent_j = j; 
-            } 
-        break;
-        case 4://best-first quâo distante a solução está do nó atual?
-            fNew = H(neighbor.x, neighbor.y,goal);
+        case 0://Faz a busca sem critério nenhum
+            fNew = rand();
             naux->parent_i = i; 
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
-
-        //Buscas não informadas
+        
         case 1://Busca em profundidade, basta usar a lista como pilha
             p = *open->begin();
             fNew = p.first - 1;
@@ -301,12 +283,46 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
-        case 0://Faz a busca sem critério nenhum
-            fNew = rand();
+        //Buscas informadas:
+        case 3://best-first quâo distante a solução está do nó atual?
+            fNew = H(neighbor.x, neighbor.y,goal);
             naux->parent_i = i; 
             naux->parent_j = j; 
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
+
+        case 4://AStar, o critério é fNew = gNew + hNew;
+            gNew = NodeInfo[i][j].g + 1.0; 
+            hNew = H(neighbor.x, neighbor.y, this->goal); 
+            fNew = gNew + hNew;
+            
+            if (naux->f >= fNew){ 
+                open->insert( make_pair(fNew, make_pair(neighbor.x, neighbor.y))); 
+                // Atualiza as informações desta célula 
+                naux->f = fNew; 
+                naux->g = gNew; 
+                naux->h = hNew; 
+                naux->parent_i = i; 
+                naux->parent_j = j; 
+            } 
+        break;
+        case 5://Dijkstra;
+            fNew = NodeInfo[i][j].f + 1.0; 
+            if (naux->f >= fNew){ 
+                open->insert( make_pair(fNew, make_pair(neighbor.x, neighbor.y))); 
+                // Atualiza as informações desta célula 
+                naux->f = fNew; 
+                naux->g = 0; 
+                naux->h = 0; 
+                naux->parent_i = i; 
+                naux->parent_j = j; 
+            } 
+        break;
+        
+
+        //Buscas não informadas
+        
+        
         default:
             printf("O algoritmo %d não existe!\n",alg);
             exit(0);
