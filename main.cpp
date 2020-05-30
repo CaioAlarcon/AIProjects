@@ -12,7 +12,7 @@ int main(int argc, char * argv[]){
     maze * L;
     int height,width;
     double WallDensity;
-    bool solve=false, generate=false,showpath=false,log, print = false;
+    bool solve=false, generate=false,showpath=false,log=false, print = false;
     char * IF=NULL;
     char * OF=NULL;
     
@@ -91,9 +91,13 @@ int main(int argc, char * argv[]){
             L->print(L,p,OF);
         else if (print)
             L->print(L,p);
+        if(log)
+            L->log();
+        cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
     }
-    L->log();
-    cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
+    
+    
+    
     return 0;   
 }
 
