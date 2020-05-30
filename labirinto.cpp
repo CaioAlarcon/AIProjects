@@ -44,6 +44,7 @@ void maze::log(){
     fclose(pf);
 }
 
+
 double maze::SolveTime(){//retorna o tempo de execussão do algoritmo
     return (T2 - T1) * 1000.0 / CLOCKS_PER_SEC;
 }

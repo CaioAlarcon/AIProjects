@@ -52,11 +52,13 @@ int main(int argc, char * argv[]){
             sscanf(argv[++i],"%d",&seed);
             continue;
         }
-        if(!strcmp("--log",argv[i++])){
+        if(!strcmp("--log",argv[i])){
+            i++;
             log = true;
             continue;
         }
-        if(!strcmp("--print",argv[i++])){
+        if(!strcmp("--print",argv[i])){
+            i++;
             print = true;
             continue;
         }
