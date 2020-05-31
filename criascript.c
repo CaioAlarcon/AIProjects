@@ -20,9 +20,9 @@ int main(){
                     fprintf(p,"./maze -g %d %d %lf -w arquivo%d.maze --seed %u ",k,l,j,n,(unsigned int)rand());
                     if(k<1000)fprintf(p,"& disown\n");
                         else fprintf(p,"\n");
-                    for(i=0;i<=5;i++) {                       //algoritmo   
+                    for(i=0;i<5;i++) {                       //algoritmo   
                         fprintf(p2,"./maze -s arquivo%d.maze %u --log ",n,i);
-                        if(k<1000)fprintf(p2,"& disown\n");
+                        if(k<10000)fprintf(p2,"& disown\n");
                         else fprintf(p2,"\n");
                     }
                 n++;         

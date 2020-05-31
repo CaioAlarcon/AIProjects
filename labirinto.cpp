@@ -14,7 +14,7 @@ void maze::AlgName(char name[15]){
         sprintf(name,"Random");
         break;
         case 1:
-        sprintf(name,"Profundidade");
+        sprintf(name,"Profund.");
         break;
         case 2:
         sprintf(name,"Largura");
@@ -28,7 +28,9 @@ void maze::AlgName(char name[15]){
         case 5:
         sprintf(name,"Dijkstra");
         break;
-        
+        case 6:
+        sprintf(name,"Hill C");
+        break;
         default:
         sprintf(name,"?");
     }
