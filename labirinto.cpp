@@ -38,8 +38,8 @@ void maze::log(){
     while(!(fp = fopen("maze.log","a")));
     
     if(fp){
-        fprintf(fp,"Alg:%s\tArq:%s\tAltu:%d\tLarg:%d\ttempo:%lfms\tpassos:%d\tcaminho:",Algname,FN,rows, columns,SolveTime(),PATH.steps);
-        print(PATH,fp);
+        fprintf(fp,"Alg:%s\tArq:%s\tAltu:%d\tLarg:%d\ttempo:%lfms\tpassos:%d\n",Algname,FN,rows, columns,SolveTime(),PATH.steps);
+        //print(PATH,fp);
     }
     fclose(fp);
 }
