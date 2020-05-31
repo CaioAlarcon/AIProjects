@@ -20,8 +20,8 @@ int main(int argc, char * argv[]){
         if(!strcmp("-s",argv[i])){//solve
             solve = true;
             if(++i!=argc)
-                IF = strdup(argv[i]);//input file
-            if(++i!=argc)
+                IF = strdup(argv[i++]);//input file
+            if(i!=argc)
                 sscanf(argv[i],"%d",&alg);
             else alg = 0;
             continue;
@@ -53,12 +53,10 @@ int main(int argc, char * argv[]){
             continue;
         }
         if(!strcmp("--log",argv[i])){
-            i++;
             log = true;
             continue;
         }
         if(!strcmp("--print",argv[i])){
-            i++;
             print = true;
             continue;
         }
@@ -89,11 +87,13 @@ int main(int argc, char * argv[]){
         p = L->solve(alg);
         if(OF)
             L->print(L,p,OF);
-        else if (print)
+        else if (print){
             L->print(L,p);
+            cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
+        }
         if(log)
             L->log();
-        cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
+        
     }
     
     

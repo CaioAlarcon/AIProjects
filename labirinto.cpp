@@ -34,14 +34,14 @@ void maze::AlgName(char name[15]){
     }
 }
 void maze::log(){
-    FILE * pf;
-    while(!(pf = fopen("maze.log","a")));
+    FILE * fp;
+    while(!(fp = fopen("maze.log","a")));
     
-    if(pf){
-        fprintf(pf,"Alg:%s\tArq:%s\tAltu:%d\tLarg:%d\ttempo:%lfms\tpassos:%d\tcaminho:",Algname,FN,rows, columns,SolveTime(),PATH.steps);
-        print(PATH,pf);
+    if(fp){
+        fprintf(fp,"Alg:%s\tArq:%s\tAltu:%d\tLarg:%d\ttempo:%lfms\tpassos:%d\tcaminho:",Algname,FN,rows, columns,SolveTime(),PATH.steps);
+        print(PATH,fp);
     }
-    fclose(pf);
+    fclose(fp);
 }
 
 
@@ -74,11 +74,14 @@ void maze::print(path p,char * FileName){
 void maze::print(path p,void * fp){
     int i;
     if(!fp)return;
-    
-    fprintf((FILE*)fp,"[");
-    for(i=0;i<p.steps-1;i++)
-        fprintf((FILE*)fp,"(%d,%d),",p.P[i].x,p.P[i].y);
-    fprintf((FILE*)fp,"(%d,%d)]\n",p.P[i].x,p.P[i].y);
+    if(p.steps == -1)
+        fprintf((FILE*)fp,"[]\n");
+    else{
+        fprintf((FILE*)fp,"[");
+        for(i=0;i<p.steps-1;i++)
+            fprintf((FILE*)fp,"(%d,%d),",p.P[i].x,p.P[i].y);
+        fprintf((FILE*)fp,"(%d,%d)]\n",p.P[i].x,p.P[i].y);
+    }
 }
 void maze::print(){//Imprime o labirinto 
     int i,j;
