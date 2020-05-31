@@ -1600,3 +1600,89 @@ Alg:Largura	Arq:arquivo69.maze	Altu:100	Larg:100000	tempo:21945.536000ms	passos:
 Alg:Largura	Arq:arquivo84.maze	Altu:1000	Larg:10000	tempo:21840.369000ms	passos:5076
 Alg:Largura	Arq:arquivo83.maze	Altu:1000	Larg:10000	tempo:24442.188000ms	passos:6690
 Alg:Largura	Arq:arquivo68.maze	Altu:100	Larg:100000	tempo:23992.100000ms	passos:6401
+Alg:Largura	Arq:arquivo67.maze	Altu:100	Larg:100000	tempo:26751.487000ms	passos:27164
+Alg:Hill C	Arq:arquivo67.maze	Altu:100	Larg:100000	tempo:29225.233000ms	passos:74394
+Alg:Largura	Arq:arquivo82.maze	Altu:1000	Larg:10000	tempo:26870.703000ms	passos:8798
+Alg:Largura	Arq:arquivo81.maze	Altu:1000	Larg:10000	tempo:28947.126000ms	passos:5337
+Alg:Largura	Arq:arquivo66.maze	Altu:100	Larg:100000	tempo:29565.996000ms	passos:76185
+Alg:Largura	Arq:arquivo80.maze	Altu:1000	Larg:10000	tempo:31073.254000ms	passos:3379
+Alg:Largura	Arq:arquivo65.maze	Altu:100	Larg:100000	tempo:32158.726000ms	passos:92489
+Alg:Largura	Arq:arquivo64.maze	Altu:100	Larg:100000	tempo:35195.092000ms	passos:76474
+Alg:BestFirst	Arq:arquivo90.maze	Altu:1000	Larg:100000	tempo:49999.121000ms	passos:110448
+Alg:BestFirst	Arq:arquivo92.maze	Altu:1000	Larg:100000	tempo:63201.106000ms	passos:128061
+Alg:Dijkstra	Arq:arquivo91.maze	Altu:1000	Larg:100000	tempo:73896.999000ms	passos:33195
+Alg:Dijkstra	Arq:arquivo95.maze	Altu:1000	Larg:100000	tempo:89379.827000ms	passos:93352
+Alg:Hill C	Arq:arquivo32.maze	Altu:10	Larg:100000	tempo:157209.003000ms	passos:192607
+Alg:Largura	Arq:arquivo95.maze	Altu:1000	Larg:100000	tempo:148987.581000ms	passos:145892
+Alg:Hill C	Arq:arquivo71.maze	Altu:100	Larg:100000	tempo:173021.671000ms	passos:203950
+Alg:Random	Arq:arquivo95.maze	Altu:1000	Larg:100000	tempo:196915.955000ms	passos:351718
+Alg:Profund.	Arq:arquivo94.maze	Altu:1000	Larg:100000	tempo:223313.721000ms	passos:93689
+Alg:Largura	Arq:arquivo92.maze	Altu:1000	Larg:100000	tempo:226935.630000ms	passos:134511
+Alg:Dijkstra	Arq:arquivo90.maze	Altu:1000	Larg:100000	tempo:238607.384000ms	passos:102090
+Alg:Dijkstra	Arq:arquivo88.maze	Altu:1000	Larg:100000	tempo:249131.974000ms	passos:85229
+Alg:Random	Arq:arquivo94.maze	Altu:1000	Larg:100000	tempo:253005.842000ms	passos:157983
+Alg:Profund.	Arq:arquivo92.maze	Altu:1000	Larg:100000	tempo:298244.511000ms	passos:188079
+Alg:Largura	Arq:arquivo89.maze	Altu:1000	Larg:100000	tempo:311558.576000ms	passos:58955
+Alg:Hill C	Arq:arquivo93.maze	Altu:1000	Larg:100000	tempo:372615.702000ms	passos:-1
+Alg:Profund.	Arq:arquivo96.maze	Altu:10000	Larg:10000	tempo:453483.121000ms	passos:99980555
+Alg:Random	Arq:arquivo91.maze	Altu:1000	Larg:100000	tempo:476013.347000ms	passos:175173
+Alg:Hill C	Arq:arquivo95.maze	Altu:1000	Larg:100000	tempo:577512.259000ms	passos:351718
+Alg:Random	Arq:arquivo89.maze	Altu:1000	Larg:100000	tempo:545066.076000ms	passos:302837
+Alg:Largura	Arq:arquivo96.maze	Altu:10000	Larg:10000	tempo:211023.374000ms	passos:24077
+Alg:BestFirst	Arq:arquivo96.maze	Altu:10000	Larg:10000	tempo:2261.008000ms	passos:10553
+Alg:A Star	Arq:arquivo96.maze	Altu:10000	Larg:10000	tempo:22788.418000ms	passos:10553
+Alg:Dijkstra	Arq:arquivo96.maze	Altu:10000	Larg:10000	tempo:203987.675000ms	passos:10553
+Alg:Hill C	Arq:arquivo88.maze	Altu:1000	Larg:100000	tempo:1098617.638000ms	passos:499377
+Alg:Hill C	Arq:arquivo96.maze	Altu:10000	Larg:10000	tempo:661973.031000ms	passos:193723
+Alg:Random	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:524117.779000ms	passos:172105
+Alg:Profund.	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:8842.147000ms	passos:1621017
+Alg:Largura	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:190238.845000ms	passos:15903
+Alg:BestFirst	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:2166.466000ms	passos:11163
+Alg:A Star	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:37708.060000ms	passos:11123
+Alg:Dijkstra	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:193381.128000ms	passos:11123
+Alg:Hill C	Arq:arquivo97.maze	Altu:10000	Larg:10000	tempo:567683.223000ms	passos:126449
+Alg:Random	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:368143.764000ms	passos:115663
+Alg:Profund.	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:7695.603000ms	passos:1383991
+Alg:Largura	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:170753.759000ms	passos:25529
+Alg:BestFirst	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:2170.490000ms	passos:13621
+Alg:A Star	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:92265.937000ms	passos:13453
+Alg:Dijkstra	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:200235.468000ms	passos:13453
+Alg:Hill C	Arq:arquivo98.maze	Altu:10000	Larg:10000	tempo:383863.393000ms	passos:154495
+Alg:Random	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:201544.362000ms	passos:94232
+Alg:Profund.	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:2340.297000ms	passos:86946
+Alg:Largura	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:155020.724000ms	passos:27052
+Alg:BestFirst	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:2134.289000ms	passos:16646
+Alg:A Star	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:136991.407000ms	passos:16354
+Alg:Random	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:69088.592000ms	passos:67497
+Alg:Profund.	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:3048.527000ms	passos:111415
+Alg:Largura	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:88676.233000ms	passos:44347
+Alg:BestFirst	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:2173.009000ms	passos:18721
+Alg:A Star	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:36674.732000ms	passos:14237
+Alg:Dijkstra	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:196232.401000ms	passos:16354
+Alg:Random	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:198650.623000ms	passos:-1
+Alg:Random	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:168942.815000ms	passos:122911
+Alg:Profund.	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:2950.831000ms	passos:242133
+Alg:Dijkstra	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:102739.276000ms	passos:14237
+Alg:Largura	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:119916.674000ms	passos:33765
+Alg:BestFirst	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:2102.097000ms	passos:14471
+Alg:Hill C	Arq:arquivo103.maze	Altu:10000	Larg:10000	tempo:77732.524000ms	passos:82833
+Alg:Profund.	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:164847.211000ms	passos:-1
+Alg:A Star	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:59053.237000ms	passos:13091
+Alg:Largura	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:105400.735000ms	passos:-1
+Alg:Dijkstra	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:155854.673000ms	passos:13091
+Alg:Hill C	Arq:arquivo99.maze	Altu:10000	Larg:10000	tempo:382918.813000ms	passos:144642
+Alg:BestFirst	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:135844.360000ms	passos:-1
+Alg:Profund.	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:9628.765000ms	passos:1812413
+Alg:A Star	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:133954.534000ms	passos:-1
+Alg:Hill C	Arq:arquivo101.maze	Altu:10000	Larg:10000	tempo:235981.876000ms	passos:124795
+Alg:Largura	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:137088.987000ms	passos:21023
+Alg:BestFirst	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:2126.201000ms	passos:13123
+Alg:Dijkstra	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:141272.110000ms	passos:-1
+Alg:Hill C	Arq:arquivo102.maze	Altu:10000	Larg:10000	tempo:210140.416000ms	passos:-1
+Alg:Random	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:293358.418000ms	passos:88575
+Alg:Profund.	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:9780.132000ms	passos:1812413
+Alg:Largura	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:138389.772000ms	passos:21023
+Alg:BestFirst	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:2128.483000ms	passos:13123
+Alg:A Star	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:52391.811000ms	passos:12235
+Alg:Dijkstra	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:148442.558000ms	passos:12235
+Alg:Hill C	Arq:arquivo100.maze	Altu:10000	Larg:10000	tempo:206640.637000ms	passos:92593
