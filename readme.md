@@ -1,9 +1,9 @@
 Como compilar:
-no terminal:
 
+no terminal:<br>
 git cone https://github.com/CaioAlarcon/AIProjects<br>
 cd AIProjects<br>
 make<br>
 
-<script>allert("isso não pode funcionar");</script>
+
 Como usar:
