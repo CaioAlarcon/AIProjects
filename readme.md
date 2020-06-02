@@ -1,19 +1,9 @@
-O que é pra fazer:
-  
-Cinco algoritmos de busca:
-  
-  
-Busca em profundidade;  
-Busca em largura;  
-Busca Best-First Search;  
-Busca A*;  
-Hill Climbing.  
-  
-Ler entrada de um formato específico:  
-intlinha intcoluna
+Como compilar:
+no terminal:
 
-"*" = pode passar  
-"#" = ponto inicial  
-"-" = não pode passar  
-"$" = objetivo  
+git cone https://github.com/CaioAlarcon/AIProjects
+cd AIProjects
+make
 
+
+Como usar:
