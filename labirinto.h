@@ -39,6 +39,7 @@ class maze{
         void criteria(int, int, int, point, std::set<std::pair<double, std::pair<int, int> > > *);   //Aplica aos algoritmos seus respectivos critérios
     public:
         void AlgName(char name[10]);
+        char * AlgName();
         double SolveTime();
         maze();                                         //Construtor a partir do stdio
         maze(int rows, int lines, double WallDensity);  //Construtor aleatório

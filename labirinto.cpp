@@ -34,6 +34,13 @@ void maze::AlgName(char name[15]){
         default:
         sprintf(name,"?");
     }
+    
+}
+
+char * maze::AlgName(){
+    char aux[15];
+    AlgName(aux);
+    return strdup(aux);
 }
 void maze::log(){
     FILE * fp;

@@ -88,12 +88,15 @@ int main(int argc, char * argv[]){
         if(OF)
             L->print(L,p,OF);
         else if (print){
-            L->print(L,p);
-            cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
+            L->print(L,p);   
         }
+        if(showpath)
+            L->print(p);
         if(log)
             L->log();
         
+        cout << "Tempo para resolver: "<< L->SolveTime() << " ms\n";
+        cout << "Algoritmo usado: "<< L->AlgName() << "\n";
     }
     
     
@@ -102,5 +105,37 @@ int main(int argc, char * argv[]){
 }
 
 void help(){
-    printf("página de ajuda\n");    
+   cout << "usage: maze [options] \n" << 
+"\n"<< 
+"-s\t\t:resolve\t\t(-s alg)\n"<< 
+"-g\t\t:gera o labirinto\t(-g h w wd)\n"<< 
+"-w\t\t:escreve no arquivo\t(-w arquivo)\n"<< 
+"-p\t\t:mostrar passos\n"<< 
+"--seed\t\t:especifica a seed\t(--seed 465015)\n"<< 
+"--log\t\t:habilita o arquivo de log\n"<< 
+"--print\t\t:mostra na tela\n"<< 
+"\n"<< 
+"alg\t\t:0-6\n"<< 
+"0\t\t:rand\n"<< 
+"1\t\t:profundidade\n"<< 
+"2\t\t:largura\n"<< 
+"3\t\t:BestFirst\n"<< 
+"4\t\t:AStar\n"<< 
+"5\t\t:Dijkstra\n"<< 
+"6\t\t:Hill Climbing\n"<< 
+"\n"<< 
+"h\t\t:altura do labirinto\n"<< 
+"w\t\t:largura do labirinto\n"<< 
+"wd\t\t:densidade de obstáculos\n"<< 
+"\n"<< 
+"Exemplo:\n"<< 
+"Gerar um labirinto 50X50 com densidade 20% e salvar no arquivo maze.txt:\n"<< 
+"./maze -g 50 50 0.2 -w maze.txt\n"<< 
+"\n"<< 
+"Resolver o labirinto salvo em maze.txt usando AStar e mostrar os passos na tela:\n"<< 
+"./maze -s maze.txt 4 -p \n"<<
+"\n"<< 
+"Resolver o labirinto salvo em maze.txt usando AStar e mostrar o caminho na tela:\n"<< 
+"./maze -s maze.txt 4 --print \n\n";
+
 }
