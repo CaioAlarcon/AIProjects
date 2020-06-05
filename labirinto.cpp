@@ -401,7 +401,7 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
         
-        case 1://Busca em profundidade, basta usar a lista como pilha
+        case 2://Busca em profundidade, basta usar a lista como pilha
             p = *open->begin();
             fNew = p.first - 1;
             naux->parent_i = i; 
@@ -409,7 +409,7 @@ void maze::criteria(int alg, int i, int j, point neighbor, set<pPair> * open){
             open->insert(make_pair(fNew, make_pair(neighbor.x, neighbor.y)));
         break;
         
-        case 2://Busca em largura, basta usar a lista como fila
+        case 1://Busca em largura, basta usar a lista como fila
             p = *open->end();
             fNew = p.first + 1;
             naux->parent_i = i; 
