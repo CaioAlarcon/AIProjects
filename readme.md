@@ -7,6 +7,7 @@ make<br>
 
 
 Como usar:
+
 usage: maze [options] 
 
 -s          :resolve            (-s alg)
